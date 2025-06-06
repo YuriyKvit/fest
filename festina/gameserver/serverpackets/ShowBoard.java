@@ -18,14 +18,13 @@
  */
 package com.festina.gameserver.serverpackets;
 
-import com.festina.gameserver.model.actor.instance.*;
-import javolution.lang.*;
-
 import java.util.List;
+import java.util.logging.*;
 
 public class ShowBoard extends ServerBasePacket
 {
 	private static final String _S__6E_SHOWBOARD = "[S] 6e ShowBoard";
+	private static Logger _log = Logger.getLogger(ShowBoard.class.getName());
 
 	private String _htmlCode;	
 	private String _id;
@@ -100,66 +99,42 @@ public class ShowBoard extends ServerBasePacket
 		writeS("bypass _bbsfriends"); // friends
 		writeS("bypass bbs_add_fav"); // add fav.
 
-		L2PcInstance player = getClient().getActiveChar();
-		if (player == null) {
-			return;
-		}
-
-		if (_htmlCode != null) {
-			if (_id.equalsIgnoreCase("101")) {
-				player.cleanBypasses(true);
+		if (!_id.equals("1002"))
+		{
+			byte data[] = new byte[2 + 2 + 2 + _id.getBytes().length * 2 + 2
+				* ((_htmlCode != null) ? _htmlCode.getBytes().length : 0)];
+			int i = 0;
+			for (int j = 0; j < _id.getBytes().length; j++, i += 2)
+			{
+				data[i] = _id.getBytes()[j];
+				data[i + 1] = 0;
 			}
+			data[i] = 8;
+			i++;
+			data[i] = 0;
+			i++;
+			if (_htmlCode == null)
+			{
 
-			_htmlCode = player.encodeBypasses(_htmlCode, true);
-		}
-
-		TextBuilder str = new TextBuilder(_id + "\u0008");
-		if (!_id.equals("1002")) {
-			str.append(_htmlCode);
-		} else {
-			for (String arg : _arg) {
-				str.append(arg + " \u0008");
 			}
+			else
+			{
+				for (int j = 0; j < _htmlCode.getBytes().length; i += 2, j++)
+				{
+					data[i] = _htmlCode.getBytes()[j];
+					data[i + 1] = 0;
+				}
+			}
+			data[i] = 0;
+			i++;
+			data[i] = 0;
+			//writeS(_htmlCode); // current page
+			writeB(data);
 		}
-		writeS(str.toString());
-		str.reset();
-		str = null;
-//		if (!_id.equals("1002"))
-//		{
-//			byte data[] = new byte[2 + 2 + 2 + _id.getBytes().length * 2 + 2
-//				* ((_htmlCode != null) ? _htmlCode.getBytes().length : 0)];
-//			int i = 0;
-//			for (int j = 0; j < _id.getBytes().length; j++, i += 2)
-//			{
-//				data[i] = _id.getBytes()[j];
-//				data[i + 1] = 0;
-//			}
-//			data[i] = 8;
-//			i++;
-//			data[i] = 0;
-//			i++;
-//			if (_htmlCode == null)
-//			{
-//
-//			}
-//			else
-//			{
-//				for (int j = 0; j < _htmlCode.getBytes().length; i += 2, j++)
-//				{
-//					data[i] = _htmlCode.getBytes()[j];
-//					data[i + 1] = 0;
-//				}
-//			}
-//			data[i] = 0;
-//			i++;
-//			data[i] = 0;
-//			//writeS(_htmlCode); // current page
-//			writeB(data);
-//		}
-//		else
-//		{
-//			writeB(get1002());
-//		}
+		else
+		{
+			writeB(get1002());
+		}
 	}
 
 	/* (non-Javadoc)

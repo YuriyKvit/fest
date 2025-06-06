@@ -1049,8 +1049,8 @@ public final class Config
     public static final String BUFFER_FILE = "./config/buffer.properties";
     public static int BUFFER_ID;
     public static boolean BUFF_CANCEL;
-    public static final FastMap<Integer, Integer> M_BUFF = new FastMap<Integer, Integer>();
-    public static final FastMap<Integer, Integer> F_BUFF = new FastMap<Integer, Integer>();
+    public static final FastMap<Integer, Integer> M_BUFF = new FastMap<Integer, Integer>().setShared(true);
+    public static final FastMap<Integer, Integer> F_BUFF = new FastMap<Integer, Integer>().setShared(true);
     public static final FastTable<Integer> F_PROFILE_BUFFS = new FastTable<Integer>();
 
     /**
@@ -2010,7 +2010,6 @@ public final class Config
                     }
                 }
             }
-
             propertySplit = serviseSet.getProperty("Fighter", "1204,2").split(";");
             for (String buffs : propertySplit) {
                 String[] pbuff = buffs.split(",");

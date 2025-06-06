@@ -30,10 +30,13 @@ import com.festina.gameserver.model.actor.instance.L2PcInstance;
 import com.festina.gameserver.serverpackets.ShowBoard;
 import com.festina.gameserver.serverpackets.SystemMessage;
 
+import java.util.logging.*;
+
 public class CommunityBoard
 {	
 	private static CommunityBoard _instance;
-	
+	protected static final Logger _log = Logger.getLogger(CommunityBoard.class.getName());
+
 	public static CommunityBoard getInstance()
 	{
 		if (_instance == null)

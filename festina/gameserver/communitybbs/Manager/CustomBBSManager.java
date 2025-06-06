@@ -25,7 +25,7 @@ public class CustomBBSManager extends BaseBBSManager {
     @Override
     public void parsecmd(String command, L2PcInstance player) {
         TextBuilder tb = new TextBuilder("");
-        tb.append(getPwHtm("menu"));
+//        tb.append(getPwHtm("menu")); // TODO Separate header munu and content
         if (command.equalsIgnoreCase("_pwhome")) {
             String content = getPwHtm("menu");
             if (content == null) {
@@ -41,7 +41,6 @@ public class CustomBBSManager extends BaseBBSManager {
             }
             tb.append(content + "</body></html>");
         } else if (command.startsWith("_bbsmultisell")) {
-
             String[] tmp = command.substring(14).split(" ");
 //            L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(tmp[1]), player, false, 0);
             player.sendPacket(new MultiSellList(Integer.parseInt(tmp[1]), false, player));
@@ -103,14 +102,14 @@ public class CustomBBSManager extends BaseBBSManager {
                     player.doFullBuff(2);
                     break;
             }
-            String content = getPwHtm("40001");
+            String content = getPwHtm("1");
             if (content == null) {
-                content = "<html><body><br><br><center>Page: 40001.htm not found.</center></body></html>";
+                content = "<html><body><br><br><center>Page: 1.htm not found.</center></body></html>";
             }
-            tb.append(content + "</body></html>");
+            tb.append(content);
         } else if (command.startsWith("_bbsprofileBuff")) {
             player.doBuffProfile(Integer.parseInt(command.substring(15).trim()));
-            String content = getPwHtm("40001");
+            String content = getPwHtm("index");
             if (content == null) {
                 content = "<html><body><br><br><center>Page: 40001.htm not found.</center></body></html>";
             }
@@ -153,12 +152,6 @@ public class CustomBBSManager extends BaseBBSManager {
             player.sendPacket(new PlaySound("ItemSound.quest_finish"));
 
             tb.append("Congratulations with nobles!");
-        } else
-        {
-            ShowBoard sb = new ShowBoard("<html><body><br><br><center>the command: "+command+" is not implemented yet</center><br><br></body></html>","101");
-            player.sendPacket(sb);
-            player.sendPacket(new ShowBoard(null,"102"));
-            player.sendPacket(new ShowBoard(null,"103"));
         }
         separateAndSend(tb.toString(), player);
         tb.reset();

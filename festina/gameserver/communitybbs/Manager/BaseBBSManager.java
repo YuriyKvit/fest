@@ -19,7 +19,7 @@
 package com.festina.gameserver.communitybbs.Manager;
 
 import java.util.List;
-
+import java.util.logging.*;
 import javolution.util.FastList;
 import com.festina.gameserver.model.actor.instance.L2PcInstance;
 import com.festina.gameserver.serverpackets.ShowBoard;
@@ -29,17 +29,20 @@ public abstract class BaseBBSManager
 {
 	public static final String PWHTML = "data/html/CommunityBoard/";
 	public static HtmCache _hc = HtmCache.getInstance();
+	protected static final Logger _log = Logger.getLogger(BaseBBSManager.class.getName());
 
 	public abstract void parsecmd(String command, L2PcInstance activeChar);
 	public abstract void parsewrite(String ar1,String ar2,String ar3,String ar4,String ar5, L2PcInstance activeChar);
 	protected void separateAndSend(String html, L2PcInstance acha)
 	{
+		if (html == null) {
+			return;
+		}
 		if (html.length() < 8180)
 		{
 			acha.sendPacket(new ShowBoard(html, "101"));
 			acha.sendPacket(new ShowBoard(null, "102"));
 			acha.sendPacket(new ShowBoard(null, "103"));
-			
 		}
 		else if (html.length() < 16360)
 		{

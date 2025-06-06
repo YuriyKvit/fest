@@ -4556,7 +4556,6 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 		_fullRebuff = System.currentTimeMillis();
-
 		FastMap<Integer, Integer> buffs = null;
 		switch (type) {
 			case 1:
@@ -4572,14 +4571,11 @@ public abstract class L2Character extends L2Object
 				buffs = Config.M_BUFF;
 				break;
 		}
-
 		if (Config.BUFF_CANCEL) {
 			stopAllEffects();
 		}
-
 		SkillTable _st = SkillTable.getInstance();
         for (FastMap.Entry<Integer, Integer> e = buffs.head(), end = buffs.tail(); (e = e.getNext()) != end;) {
-			_log.info("Buf: " + e);
 			Integer id = e.getKey(); // No typecast necessary.
 			Integer lvl = e.getValue(); // No typecast necessary.
 			if (id == null || lvl == null) {
@@ -4587,7 +4583,6 @@ public abstract class L2Character extends L2Object
 			}
 			_st.getInfo(id, lvl).getEffects(this, this);
 		}
-		_log.info("Bufs: done");
 		//broadcastPacket(new MagicSkillUser(this, this, 1013, 1, 1, 0));
 	}
 

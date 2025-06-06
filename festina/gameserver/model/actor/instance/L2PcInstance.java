@@ -3078,36 +3078,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 	}
 
-
-	public void cleanBypasses(boolean bbs) {
-		List<String> bypassStorage = getStoredBypasses(bbs);
-		synchronized (bypassStorage) {
-			bypassStorage.clear();
-		}
-	}
-
-	public String encodeBypasses(String htmlCode, boolean bbs) {
-		List<String> bypassStorage = getStoredBypasses(bbs);
-		synchronized (bypassStorage) {
-			return BypassManager.encode(htmlCode, bypassStorage, bbs);
-		}
-	}
-
-	private List<String> bypasses = null, bypasses_bbs = null;
-
-	private List<String> getStoredBypasses(boolean bbs) {
-		if (bbs) {
-			if (bypasses_bbs == null) {
-				bypasses_bbs = new ArrayList<String>();
-			}
-			return bypasses_bbs;
-		}
-		if (bypasses == null) {
-			bypasses = new ArrayList<String>();
-		}
-		return bypasses;
-	}
-
 	/**
 	 * Manage Interact Task with another L2PcInstance.<BR><BR>
 	 *
